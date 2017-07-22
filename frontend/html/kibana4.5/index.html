@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width">
+  <title>Kibana</title>
+  <script src="/js/dcnm/util/AfwApi.js"> </script
+  <link rel="stylesheet" type="text/css" href="/module/epl/css/epl-filters.css">
+</head>
+<body kbn-chrome id="kibana-body"><script>window.__KBN__ = {
+    "app": {
+        "id": "kibana",
+        "title": "Kibana",
+        "description": "the kibana you know and love",
+        "main": "plugins/kibana/kibana",
+        "url": ""
+    },
+    "nav": [{
+        "id": "kibana",
+        "title": "Kibana",
+        "description": "the kibana you know and love",
+        "main": "plugins/kibana/kibana",
+        "url": "/"
+    }],
+    "version": "4.5.4",
+    "buildNum": 10000,
+    "buildSha": "00d0f493b91e3215703b8c8a64ec09966216ed95",
+    "basePath": "",
+    "vars": {
+        "kbnDefaultAppId": "discover",
+        "tilemap": {
+            "url": "https://tiles.elastic.co/v1/default/{z}/{x}/{y}.png?my_app_name=kibana&my_app_version=4.5.4&elastic_tile_service_tos=agree",
+            "options": {
+                "attribution": "© [Elastic Tile Service](https://www.elastic.co/elastic-tile-service)",
+                "minZoom": 1,
+                "maxZoom": 10
+            }
+        },
+        "kbnIndex": ".kibana",
+        "esRequestTimeout": 30000,
+        "esShardTimeout": 30000,
+        "esApiVersion": "2.0"
+    }
+};
+</script>
+<style>
+.ui-app-loading {
+  width: 33.3%;
+  margin: 60px auto;
+  padding: 0 15px;
+  text-align: center;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #444444;
+  padding-top: 100px;
+  background-size: 128px;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-image: url('epl-custom/initial_load.svg');
+}
+
+.ui-app-loading small {
+  font-size: 65%;
+  font-weight: 400;
+  color: #b4bcc2;
+}
+
+</style>
+<div class="ui-app-loading"><br/><br/><br/><!--<h1><strong>End-Point Locator</strong><small>&nbsp;is loading. Give me a moment here. I'm loading a whole bunch of code. Don't worry, all this good stuff will be cached up for next time!
+</small></h1>--></div><script>window.onload = function () {
+
+  var hideLoadingMessage = /#.*[?&]embed(&|$)/.test(window.location.href);
+  if (hideLoadingMessage) {
+    var loading = document.querySelector('.ui-app-loading h1');
+    loading.removeChild(loading.lastChild);
+  }
+
+  var buildNum = 10000;
+  var cacheParam = buildNum ? '?v=' + buildNum : '';
+  function bundleFile(filename) {
+    var anchor = document.createElement('a');
+    anchor.setAttribute('href', "./bundles" + '/' + filename + cacheParam);
+    return anchor.href;
+  }
+  var files = [
+    bundleFile('commons.style.css'),
+    bundleFile('kibana.style.css'),
+    bundleFile('../epl-custom/main.css'),
+    bundleFile('commons.bundle.js'),
+    bundleFile('kibana.bundle.js')
+  ];
+
+  (function next() {
+    var file = files.shift();
+    if (!file) return;
+
+    var type = /\.js(\?.+)?$/.test(file) ? 'script' : 'link';
+    var dom = document.createElement(type);
+    dom.setAttribute('async', '');
+
+    if (type === 'script') {
+      dom.setAttribute('src', file);
+      dom.addEventListener('load', next);
+      document.head.appendChild(dom);
+    } else {
+      dom.setAttribute('rel', 'stylesheet');
+      dom.setAttribute('href', file);
+      document.head.appendChild(dom);
+      next();
+    }
+  }());
+};</script></body></html>

@@ -1,0 +1,140 @@
+/*
+ * This computer program is the confidential information and proprietary
+ * trade secret of Cisco Systems, Inc.  Possessions and use of this
+ * program must conform strictly to the license agreement between the user
+ * and Cisco Systems, Inc., and receipt or possession does not convey
+ * any rights to divulge, reproduce, or allow others to use this program
+ * without specific written authorization of Cisco Systems, Inc.
+ *
+ *      Copyright (c) 2015 - 2017 by Cisco Systems, Inc.
+ *      All rights reserved.
+ */
+
+/* --------------------------------- */
+
+
+.epl-container-table {
+    height:100%;
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+}
+
+.summary-review-container {
+    clear: both;
+    padding-top: 25px;
+    width: 75%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.summary-review-container .summary-review-item {
+
+}
+
+.summary-review-container .summary-review-item h2 {
+    font-weight: bold;
+}
+
+.next-button-green,
+.next-button-blue,
+.next-button-red {
+    padding: 10px;
+    width: 30%;
+    background: #99c718;
+    color: #fff !important;
+    cursor: pointer;
+    text-decoration: none !important;
+    border-radius: 50px;
+    display: inline-block;
+    font-size: 14px !important;
+    -webkit-transition : background 200ms ease-out;
+    -moz-transition : background 200ms ease-out;
+    -o-transition : background 200ms ease-out;
+    transition : background 200ms ease-out;
+}
+
+.next-button-blue {
+    background: #188bc7;
+}
+
+.next-button-red {
+    background: #c73a22;
+}
+
+.next-button-green:hover {
+    background: #8db911;
+}
+
+.next-button-green.disable,
+.next-button-green.disable:hover {
+    background: #cce38c !important;
+    cursor: default !important;
+    outline: none;
+}
+
+.next-button-blue:hover {
+    background: #1e7cad;
+}
+
+.next-button-blue.disable,
+.next-button-blue.disable:hover {
+    background: #7fb4d0 !important;
+    cursor: default !important;
+    outline: none;
+}
+
+.next-button-red:hover {
+    background: #a3301c;
+}
+
+.fi-end-point-locator-main {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    display: block;
+    background: #f3f3f3;
+    line-height: 200px;
+}
+
+.fi-end-point-locator-main:before {
+    display: inline-block;
+    content: '\e0b8';
+    font-size: 80px;
+    line-height: 200px;
+}
+
+.fi-go-back:before {
+    display: inline-block;
+    content: '\e07f';
+    font-size: 1.3rem;
+    -webkit-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+    color: #246fa8;
+}
+
+.wizard-go-back a:hover .fi-go-back:before {
+    color: #246FA8;
+}
+
+.error {
+    border-color: #da550c;
+    color: #da550c;
+}
+
+.fi-add-ha-node:before {
+    display: inline-block;
+    content: '\e08f';
+    font-size: 12px;
+    padding-right: 5px;
+}
+
+.summary-review-container-min-width {
+    width: 100%;
+    min-width: 1025px;
+}
+
+.summary-review-container-max-width {
+    width: 90%;
+}

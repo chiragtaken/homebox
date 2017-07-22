@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- ===================================================================
+ !
+ !      File:   fabric-selection.html
+ !      Name:   Uffaz Nathaniel (unathani@cisco.com)
+ !
+ !      Description: Wizard step for fabric selection
+ !
+ !      Copyright (c) 2017 by Cisco Systems, Inc.
+ !
+ !      ALL RIGHTS RESERVED. THESE SOURCE FILES ARE THE SOLE PROPERTY
+ !      OF CISCO SYSTEMS, Inc. AND CONTAIN CONFIDENTIAL  AND PROPRIETARY
+ !      INFORMATION.  REPRODUCTION OR DUPLICATION BY ANY MEANS OF ANY
+ !      PORTION OF THIS SOFTWARE WITHOUT PRIOR WRITTEN CONSENT OF
+ !      CISCO SYSTEMS, Inc. IS STRICTLY PROHIBITED.
+ !
+ ! ================================================================== -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content= "text/html; charset=UTF-8">
+    <link href="lib/wizard/prettify.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <script src="lib/jquery-1.11.3.min.js"></script>
+    <script src="lib/bs/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var $rrSelector1 = $('#rr-selector-1');
+        var $rrSelector2 = $('#rr-selector-2');
+        var $configFabric = $('#checkbox-configure-my-fabric');
+        var $useNxApi = $('#checkbox-nxapi-enabled');
+
+
+        $(document).ready(function()  {
+            $rrSelector1.html('');
+            $rrSelector2.html('<option value=""></option>');
+            $.ajax({
+                // Check with UFFAZ how to Pass Fabric ID
+                url: ('/fm/fmrest/inventory/switches'),
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        var html = '<option value="' + item.ipAddress + '">' + item.logicalName + '</option>';
+                        $rrSelector1.append(html);
+                        $rrSelector2.append(html);
+                    });
+                },
+                async: false
+            });
+
+            var fieldSelectionChange = function() {
+                debugger;
+                var val1 = $('#rr-selector-1').val();
+                var val2 = $('#rr-selector-2').val();
+                window.EPL_STATE.post_data.rr1SwitchIP = val1;
+                window.EPL_STATE.post_data.rr1SwitchName = $rrSelector1.find("option:selected").text();
+                window.EPL_STATE.post_data.rr2SwitchIP = val2;
+                window.EPL_STATE.post_data.rr2SwitchName = $rrSelector2.find("option:selected").text();
+                window.EPL_STATE.post_data.nxAPIEnabled  = $('#checkbox-configure-my-fabric').is(":checked");
+                window.EPL_STATE.post_data.configureFabric =  $('#checkbox-nxapi-enabled').is(":checked");
+            };
+            $rrSelector1.change(fieldSelectionChange);
+            $rrSelector2.change(fieldSelectionChange);
+            $configFabric.change(fieldSelectionChange);
+            $useNxApi.change(fieldSelectionChange);
+            fieldSelectionChange();
+            
+        });
+
+</script>
+
+</head>
+<body>
+
+<div style="container" region="center" doLayout="true">
+    <table class="epl-container-table" style="height: 100%">
+        <tr>
+            <td valign="middle" style="text-align: center;position: relative;">
+                <h1>Select Route-Reflector (RR)</h1>
+                <h2 style="padding-top:10px;">Choose the switch(es) on which the current Fabric BGP Route-Reflector has been configured.</h2>
+                    <select id="rr-selector-1" class="wide-select green rounded"></select>
+
+                <h2 style="font-size: 13px;">Secondary RR for redundancy (optional)</h2>
+                <div class="select-style" >
+                     <select id="rr-selector-2" class="wide-select green rounded"></select>
+                </div>
+                <div>
+                   <label style="checkbox-inline">
+                       <input id="checkbox-configure-my-fabric" type="checkbox">
+                       Configure Route Reflectors for End Point Locator
+                   </label>
+                </div>
+                <div>
+                   <label style="checkbox-inline">
+                       <input id="checkbox-nxapi-enabled" type="checkbox">
+                       Collect Additional  End Point Info (Port, VLAN etc)
+                </div>
+
+            </td>
+        </tr>
+    <h2>
+    </table>
+
+</div>
+
+
+</body>
+</html>

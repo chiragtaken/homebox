@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HomeBOX</title>
+    <!-- Bootstrap -->
+    <link href="lib/bs/css/bootstrap.css" rel="stylesheet">
+    <!--<link href="lib/wizard/prettify.css" rel="stylesheet">-->
+    <link href="css/main.css" rel="stylesheet">
+
+    <script src="lib/jquery-1.11.3.min.js"></script>
+    <script src="lib/bs/js/bootstrap.min.js"></script>
+    <script src="lib/wizard/jquery.bootstrap.wizard.js"></script>
+    <!--<script src="lib/wizard/prettify.js"></script>
+    <script src="lib/wizard/wizard.js"> </script>-->
+    <script src="js/wizard.js"> </script>
+  </head>
+
+<body>
+<div class="container">
+  <h2>HomeBOX</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="active">
+        <td>Activeson</td>
+        <td>act@example.com</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+
+</html>
+
+

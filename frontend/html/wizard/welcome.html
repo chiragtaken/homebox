@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- ===================================================================
+ !
+ !      Description: Wizard step for Welcome Screen
+ !
+ !      Copyright (c) 2017 by Cisco Systems, Inc.
+ !
+ !      ALL RIGHTS RESERVED. THESE SOURCE FILES ARE THE SOLE PROPERTY
+ !      OF CISCO SYSTEMS, Inc. AND CONTAIN CONFIDENTIAL  AND PROPRIETARY
+ !      INFORMATION.  REPRODUCTION OR DUPLICATION BY ANY MEANS OF ANY
+ !      PORTION OF THIS SOFTWARE WITHOUT PRIOR WRITTEN CONSENT OF
+ !      CISCO SYSTEMS, Inc. IS STRICTLY PROHIBITED.
+ !
+ ! ================================================================== -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content= "text/html; charset=UTF-8">
+    <script src="lib/jquery-1.11.3.min.js"></script>
+    <script src="lib/bs/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        var eplHelpDialogShow = function () {
+            var d = $('#helpDialog');
+ /*
+            try {
+                if (d.buttonGroup.getChildren().length > 0) {
+                    d.buttonGroup.removeChild(d.buttonGroup.getItemAt(0));
+                    d.buttonGroup.removeChild(d.buttonGroup.getItemAt(0));
+                }
+            } catch (err) {}
+*/
+            d.resize();
+            d.show();
+            for (var i = 1; i <= 50; i++) {
+                setTimeout(function() {
+                    d.resize();
+                }, i * 10)
+            }
+        };
+    </script>
+
+</head>
+<body>
+
+<div style="container-fluid">
+    <table class="epl-container-table">
+        <tr>
+            <td valign="middle" style="text-align: center;position: relative;">
+                <p style="text-align: center;padding-bottom: 50px;"><span style="display: inline-block;" class="fi-end-point-locator-main"></span></p>
+                <h1>Endpoint Locator</h1>
+                <h2 style="font-size: 16px;padding-top:13px;">Endpoint Locator enables real-time tracking of current and past location information about network Endpoints (IP-MAC binding). <a href="#helpDialog" id="epl-see-how-it-works" style="font-size: 14px;font-family: inherit;font-weight: bold;" data-toggle="collapse">See how it works</a>.</h2>
+            </td>
+        </tr>
+    </table>
+    <div id="helpDialog" title="How it works" class="collapse">
+        <img src="images/help-guide-1.jpg" width="837px" height="550px" style="padding: 0 50px 25px;"/>
+    </div>
+</div>
+
+</script>
+
+</body>
+</html>

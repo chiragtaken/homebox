@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- ===================================================================
+ !
+ !      File:   fabric-selection.html
+ !      Name:   Uffaz Nathaniel (unathani@cisco.com)
+ !
+ !      Description: Wizard step for fabric selection
+ !
+ !      Copyright (c) 2017 by Cisco Systems, Inc.
+ !
+ !      ALL RIGHTS RESERVED. THESE SOURCE FILES ARE THE SOLE PROPERTY
+ !      OF CISCO SYSTEMS, Inc. AND CONTAIN CONFIDENTIAL  AND PROPRIETARY
+ !      INFORMATION.  REPRODUCTION OR DUPLICATION BY ANY MEANS OF ANY
+ !      PORTION OF THIS SOFTWARE WITHOUT PRIOR WRITTEN CONSENT OF
+ !      CISCO SYSTEMS, Inc. IS STRICTLY PROHIBITED.
+ !
+ ! ================================================================== -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content= "text/html; charset=UTF-8">
+    <style type="text/css">
+        .summary-review-container .summary-review-item h2 {
+            font-size: 14px;
+        }
+    </style>
+
+<script type="text/javascript">
+
+        var $summaryFabric = $('#summary-fabric');
+        var $summaryRRPrimary = $('#summary-rr-primary');
+        var $summaryRRSecondary = $('#summary-rr-secondary');
+        var $summaryFeaturesToEnable = $('#summary-cc-features-to-enable');
+        var $summaryWipeExistingData = $('#summary-cc-wipe-existing-epl-data');
+        var $summaryConfigureFabric = $('#summary-cc-fabric-configuration');
+
+
+        // Factory that generates a function for navigation
+        // to a specific page
+        var goToPageFactory = function (index) {
+            return function () {
+                EPL_STATE.wizard.goToPage(index);
+            };
+        };
+
+        function isNullOrWhiteSpace(str){
+            return str === null || str.match(/^ *$/) !== null;
+        }
+
+        var reviewInit = function() {
+        
+            //EPL_STATE.post_data.deleteEPLData = $summaryWipeExistingData.val(); 
+        
+            var data = EPL_STATE.post_data;
+        
+            $summaryFabric.val("Default_LAN"); // TBD Need to fill this from SCOPE 
+            $summaryRRPrimary.val(data.rr1SwitchName + " (" + data.rr1SwitchIP  + ")");
+            if (!isNullOrWhiteSpace(data.rr2SwitchIP)) {
+                $summaryRRSecondary.val(data.rr2SwitchName + " (" + data.rr2SwitchIP + ")");
+            }
+            if (data.nxAPIEnabled) {
+                $summaryFeaturesToEnable.append($('<option>', { "value" : 1 }).text("YES"));
+                $summaryFeaturesToEnable.val(1);
+            } else {
+                $summaryFeaturesToEnable.append($('<option>', { "value" : 1 }).text("NO"));
+                $summaryFeaturesToEnable.val(1);
+            }
+            debugger;
+            if (data.configureFabric) {
+                $summaryConfigureFabric.append($('<option>', { "value" : 1 }).text("Configure"));
+                $summaryConfigureFabric.val(1);
+            } else {
+                $summaryConfigureFabric.append($('<option>', { "value" : 1 }).text("Dont Configure"));
+                $summaryConfigureFabric.val(1);
+            }
+
+        }
+
+        $(document).ready(function()  {
+            EPL_STATE.reviewInit = reviewInit;
+        });
+
+</script>
+
+</head>
+<body>
+
+<div id="epl-content-pane-review" style="height: 100%; width: 100%;" region="center">
+
+    <table class="epl-container-table">
+        <tr>
+            <td valign="middle" style="text-align: center;position: relative;">
+                <h1>Review and Enable Endpoint Locator</h1>
+                <div id="summary-review-container-resizer" class="summary-review-container summary-review-container-max-width">
+                    <div style="width:30%;float:left;margin-left: 5%;">
+                        <div class="summary-review-item">
+                            <h2 class="width100">Fabric: </h2>
+                            <input id="summary-fabric" type="text" disabled="disabled" class="input-interface-ip" />
+                        </div>
+                        <div class="summary-review-item">
+                            <h2 class="width100">Route-Reflector (Primary): </h2>
+                            <input id="summary-rr-primary" type="text" disabled="disabled" class="input-interface-ip" />
+                        </div>
+                        <div class="summary-review-item">
+                            <h2 class="width100">Router-Reflector (Secondary): </h2>
+                            <input id="summary-rr-secondary" type="text" disabled="disabled" class="input-interface-ip" />
+                        </div>
+                    </div>
+                    <div style="width:30%;float:left;">
+                        <div class="summary-review-item">
+                            <h2 class="width100">Fabric configuration</h2>
+                            <div class="select-style disabled" style="width: 299px;padding:7px 0px 3px;">
+                                <select id="summary-cc-fabric-configuration" disabled="disabled"> </select>
+                            </div>
+                        </div>
+
+                        <div class="summary-review-item" style="display: none">
+                            <h2 class="width100" style="margin-top: 15px"><span style="color:red;">*</span> Wipe existing EPL data</h2>
+                            <div class="select-style" style="width: 299px;padding:7px 0px 3px;">
+                                <select id="summary-cc-wipe-existing-epl-data" disabled="disabled"> </select>
+                            </div>
+                        </div>
+
+                        <div class="summary-review-item">
+                            <h2 class="width100" style="font-size: 13.75px;width:auto;margin-bottom: 4px;"><span style="color:red;">*</span> Collect additional information (Port, VLAN, etc.)</h2>
+                            <div class="select-style" style="width: 299px;padding:7px 0px 3px;">
+                                <select id="summary-cc-features-to-enable" disabled="disabled"> </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+
+
+</body>
+</html>

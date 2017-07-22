@@ -1,0 +1,106 @@
+.epl-filters {
+    position: absolute;
+    top: 0px;
+    font-family: CiscoSansThin, Arial, sans-serif;
+    color: #252525;
+    z-index: 9999;
+}
+
+.epl-filters ul {
+    list-style: none;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.epl-filters li {
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 47px !important;
+    position: relative;
+    float: left;
+    border-right: 1px solid #eaeaea;
+    display: block;
+    font-size: 14px !important;
+}
+
+.epl-filter-btn {
+    height: 47px;
+    line-height: 47px;
+    padding: 0 20px;
+    display: block;
+    cursor: pointer;
+}
+
+.epl-filters li ul {
+    display: none;
+    position: absolute;
+    background: #fff;
+    padding: 0;
+    width: 200px;
+    max-height: 288px;
+    overflow: auto;
+    border-top: 1px solid #e9e9e9;
+    -moz-box-shadow: 1px 3px 3px rgba(100,100,100,0.7);
+    -webkit-box-shadow: 1px 3px 3px rgba(100,100,100,0.7);
+    box-shadow: 1px 3px 3px rgba(100,100,100,0.7);
+}
+.epl-filters li:hover ul {
+    display: block;
+}
+
+.epl-filters li ul li {
+    border-right: 0;
+    border-bottom: 1px solid #e9e9e9;
+    padding: 10px !important;
+    cursor: pointer;
+    float: none;
+    line-height: normal !important;
+}
+
+.epl-filters .selected,
+.epl-filters li ul li:hover {
+    background: #f1f1f1;
+    background: #CDE6F7;
+}
+
+.epl-filters li:hover .epl-filter-btn {
+    background: #f1f1f1;
+    background: #CDE6F7;
+}
+
+.fi-epl-filter-icon:before {
+    display: inline-block;
+    content: '\e08c';
+    font-size: 1.6rem;
+}
+
+.epl-filters input.epl-input-search {
+    border: 0;
+    padding: 0 10px 0 35px;
+    -webkit-transition: width 0.3s, border 0.3s, background-color 0.3s ease;
+    -moz-transition: width 0.3s, border 0.3s, background-color 0.3s ease;
+    -o-transition: width 0.3s, border 0.3s, background-color 0.3s ease;
+    -ms-transition: width 0.3s, border 0.3s, background-color 0.3s ease;
+    transition: width 0.3s, border 0.3s, background-color 0.3s ease;
+    width:120px;
+    outline:none;
+}
+
+.epl-filters input.epl-input-search:focus {
+    width:200px;
+    color:#000;
+}
+
+.epl-filters .epl-search-by-host-icon {
+    pointer-events: none;
+    padding: 0 5px 0 0;
+    position: absolute !important;
+    left: 13px;
+    top: 15px;
+    color: #ccc;
+    font-size: 15px;
+}
+
+.epl-filters input.epl-input-search:focus + .epl-search-by-host-icon {
+    color: #696969;
+}
