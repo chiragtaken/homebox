@@ -1,298 +1,49 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<!-- ===================================================================
- !
- !      File:   explorer.html
- !      Name:   Uffaz Nathaniel (unathani@cisco.com)
- !
- !      Description: Landing page
- !
- !
- !      Copyright (c) 2017 by Cisco Systems, Inc.
- !
- !      ALL RIGHTS RESERVED. THESE SOURCE FILES ARE THE SOLE PROPERTY
- !      OF CISCO SYSTEMS, Inc. AND CONTAIN CONFIDENTIAL  AND PROPRIETARY
- !      INFORMATION.  REPRODUCTION OR DUPLICATION BY ANY MEANS OF ANY
- !      PORTION OF THIS SOFTWARE WITHOUT PRIOR WRITTEN CONSENT OF
- !      CISCO SYSTEMS, Inc. IS STRICTLY PROHIBITED.
- !
- ! ================================================================== -->
 <html>
 <head>
     <meta http-equiv="Content-Type" content= "text/html; charset=UTF-8">
-    <title>DCNM</title>
+    <title>HomeBOX</title>
 
-    <style type="text/css">
-        body,html {
-           margin:0;
-           padding:0;
-           height:100%;
-        }
-
-        .prime .globalBreadcrumb {
-            display: none !important;
-        }
-
-        .prime .wap-nullLayout {
-            margin: 0 !important;
-        }
-
-        body.prime .wap-contentPanel {
-            padding: 0 !important;
-        }
-
-
-        #iframe_container .containerNode{
-            height: 100%;
-        }
-
-        .epl-navigator {
-            width: 100%;
-            height: 50px;
-            background: #f9f9f9;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .epl-navigator ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .epl-navigator li {
-            float: left;
-            padding: 0 18px;
-            line-height: 50px !important;
-            font-family: CiscoSansThin;
-            font-size: 14px !important;
-            -webkit-transition : background 75ms ease-out;
-            -moz-transition : background 75ms ease-out;
-            -o-transition : background 75ms ease-out;
-            transition : background 75ms ease-out;
-            cursor: pointer;
-        }
-        .epl-navigator li.active,
-        .epl-navigator li:hover {
-            background: #f1f1f1;
-            border-bottom: 1px solid #ababab;
-            font-weight: bold;
-            background: linear-gradient(to bottom, #049FD9 0%,#049fd9 100%);
-            border-color: #0b71b9;
-            border-color: #138FBD;
-            color: #fff;
-        }
-
-        a.next-button-green,
-        a.next-button-blue,
-        a.next-button-red {
-            padding: 10px;
-            width: 30%;
-            background: #99c718;
-            color: #fff !important;
-            cursor: pointer;
-            text-decoration: none !important;
-            border-radius: 50px;
-            display: inline-block;
-            font-size: 14px !important;
-            -webkit-transition : background 150ms ease-out;
-            -moz-transition : background 150ms ease-out;
-            -o-transition : background 150ms ease-out;
-            transition : background 150ms ease-out;
-        }
-
-        a.next-button-green:hover {
-            background: #8db911;
-        }
-
-        a.next-button-green.disable,
-        a.next-button-green.disable:hover {
-            background: #cce38c !important;
-            cursor: default !important;
-            outline: none;
-        }
-
-        .epl-container-table {
-            height:100%;
-            width:100%;
-            max-width:1200px;
-            margin:0 auto;
-        }
-
-        #epl-rr-status {
-            font-family: CiscoSansThin, arial, sans-serif;
-            float: right;
-            line-height: 50px;
-            padding-right: 20px;
-            color: red;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .epl-rr-status-error-ico {
-            -webkit-animation: epl_pulsate_animation 1s infinite alternate;
-            -moz-animation: epl_pulsate_animation 1s infinite alternate;
-            -ms-animation: epl_pulsate_animation 1s infinite alternate;
-            -o-animation: epl_pulsate_animation 1s infinite alternate;
-            animation: epl_pulsate_animation 1s infinite alternate;
-        }
-
-        @-webkit-keyframes epl_pulsate_animation {
-            0% { opacity: 0.5; }
-            50% { opacity: 1.0; }
-            100% { opacity: 0.5; }
-        }
-
-        .epl-rr-status-error-ico:before {
-            content: '\25C9';
-            padding-left: 3px;
-        }
-    </style>
-
+    <link rel="stylesheet" href="css/main.css">
     <script src="lib/jquery-1.11.3.min.js"></script>
-    <script src="lib/bs/js/bootstrap.min.js"></script>
-    <script src="lib/bs/js/prettify.js"></script>
-    <script src="/js/dcnm/util/AfwApi.js"> </script>
-    <script src="js/wizard.js"> </script>
-    <script type="text/javascript">
-         var RR_STATUS_REFRESH_INTERVAL = 10 * 1000;
-
-         var $body = $('body');
-         var $iframeContainer = $('#epl-frame-container');
-
-         var onResize = function () {
-             var height = $body.height() - 50;
-             $iframeContainer.height(height);
-         };
-
-/*
-         var applicationResizeHandler = topic.subscribe('APPLICATION-SHELL-RESIZED', function () {
-             onResize();
-         });
-
-         var sliderMenuResizeHandler = topic.subscribe('SLIDER-MENU-PINNED', function () {
-             onResize();
-         });
-*/
-         var eplFrontEnd = [];
-
-         eplFrontEnd = AfwDiscoverService("afwepl:0.1", "Default_LAN");
-         if (eplFrontEnd.length == 0) {
-             debugger;
-             /* TBD REDIRECT TO A PAGE SHOWING ERROR BETTER */
-             alert("Failure Discoverying End Point Locator Backend");
-         }
-
-         function getEplUrl() {
-             return '/cors-proxy/cn1-cors-proxy?_target=http://' + eplFrontEnd[0] + ':' + eplFrontEnd[1];
-         }
-
-
-         function capitalize(s)  {
-             return s[0].toUpperCase() + s.slice(1);
-         }
-
-         var rrStatusInterval = setInterval(function () {
-
-             $.ajax({
-                 url: getEplUrl() + '/rrStatus',
-                 success: function (data) {
-                     var html = '';
-                     var rrList = [];
-                     for (var i = 0; i < data.length; i++) {
-                         var item = data[i];
-                         if (!item.rrConnected) {
-                             rrList.push(item.rrSwitchIP);
-                         }
-                     }
-                     if (rrList.length > 0) {
-                         html += '<span>';
-                         html += "Unable to reach RR " + rrList.join(" and ") + ".";
-                         html += '</span>';
-                         html += '<span class="epl-rr-status-error-ico"></span>';
-                     }
-                     $('#epl-rr-status').html(html);
-                 }
-             });
-
-         }, RR_STATUS_REFRESH_INTERVAL);
-
-/*
-         var topicHash = topic.subscribe("/dojo/hashchange", function(changedHash) {
-             clearInterval(rrStatusInterval);
-             $(window).off("resize", onResize);
-             topicHash.remove();
-             applicationResizeHandler.remove();
-             sliderMenuResizeHandler.remove();
-         });
-
-         $(window).resize(onResize);
-
-         onResize();
-*/
-
-
-    </script>
-
     <script type="text/javascript" src="./js/explorer.js"></script>
-    <script type="text/javascript" src="./js/download-data.js"></script>
-
 </head>
 <body>
 
-<div class=container style="width: 100%; height: 100%;position: relative;">
+<div class="maestro-nav__container">
+</div>
 
-    <div id="epl-dummy-click-area" style="width:0;height:0;display: none;"></div>
 
-    <div class="epl-navigator">
-        <ul>
-            <li>Endpoint History</li>
-            <li class="active">Endpoint Activity</li>
-            <li>Network Historical View</li>
-            <li>Operational Heatmap</li>
-            <li>Endpoint Life</li>
-            <li>Preferences</li>
-        </ul>
-        <div id="epl-rr-status">
-            <!--RR 1 is down
-            <span class="epl-rr-status-error-ico"></span>-->
-        </div>
-    </div>
+<div class="maestro-chrome">
+    <header class="maestro-header page-header__shadow">
+	<div class="mc-vertically-fixed page-header" style="margin-left: 0px;">
+	    <div class="page-header__title">
+		<h1 class="page-header-text u-l-fl">HomeBOX</h1>
+	    </div>
+	    <div class="top-menu-container">
+		<div class="search-bar--container u-l-fr">
+		    <div class="search-bar">
+			<form class="search-bar__input">
+			    <input aria-activedescendant="search-dropdown-suggestion0" aria-autocomplete="list" aria-expanded="false" aria-label="Search" aria-owns="search-bar__suggestions" class="search-bar__text-input" placeholder="Search" role="combobox" tabindex="1" value="">
+			    <button aria-label="Search" class="search-bar__button" type="submit"><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mc-icon-template-selectable" aria-hidden="true"><title>global-search-small</title><defs><circle id="mc-global-search-small-a" cx="5" cy="5" r="5"></circle><mask id="mc-global-search-small-b" x="0" y="0" width="10" height="10" fill="#fff"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#mc-global-search-small-a"></use></mask></defs><g fill="none" fill-rule="evenodd"><g transform="translate(6 6)" stroke="#637282"><path d="M8 8l3 3" stroke-width="2" stroke-linecap="round"></path><use mask="url(#mc-global-search-small-b)" stroke-width="4" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#mc-global-search-small-a"></use></g></g></svg></button>
+			</form>
+		    </div>
+		</div>
+		<div class="top-menu-container--search-bar-empty-space">
+		</div>
+	    </div>
+	</div>
+	<div class="maestro-app">
+	    <div class="maestro-app-content" tabindex="4">
+		<div>
+   		    <table class="mc-table brws-files-view-list" aria-rowcount="7">
 
-    <div class="epl-filters" style="display: none;">
-        <ul>
-            <li id="epl-reset-button"><span class="epl-filter-btn" style="cursor: pointer;"><span class="fa fa-refresh" style="padding: 0 5px 0 0;font-size:13px"></span> Reset to default</span></li>
-            <li>
-                <span class="epl-filter-btn">Switch &nbsp;<span style="color: #565656;">▾</span></span>
-                <ul id="epl-filter-switches">
-                </ul>
-            </li>
-            <li>
-                <span class="epl-filter-btn">VRF &nbsp;<span style="color: #565656;">▾</span></span>
-                <ul id="epl-filter-vrf">
-                </ul>
-            </li>
-            <li>
-                <span class="epl-filter-btn">IPv4 &amp; IPv6 &nbsp;<span style="color: #565656;">▾</span></span>
-                <ul id="epl-filter-ipv4_ipv6">
-                    <li>IPv4 &amp; IPv6</li>
-                    <li>IPv4</li>
-                    <li>IPv6</li>
-                </ul>
-            </li>
-            <li style="position: relative;"><input type="text" placeholder="Host IP" class="epl-input-search"><span class="fa fa-search epl-search-by-host-icon"></span></li>
-            <li id="epl-download-btn"><span class="epl-filter-btn" style="font-size: 12px;"><span class="fa fa-download" style="color: #7cb74f; margin: 0 5px 0 0;font-size:13px; cursor: pointer;"></span> DOWNLOAD RAW</span></li>
-        </ul>
-    </div>
-    <div id="epl-frame-container"  style="height:100%;">
-        <div style="width: 100%; height: 100%;" id="kibana-iframe-container">
-            <iframe style="width: 100%; height: 100%; border: 0;" src="kibana4.5/index.html#/dashboard/epl_today_dashboard?embed=true&_g=(refreshInterval:(display:'30%20seconds',pause:!f,section:1,value:30000),time:(from:now-5y,mode:quick,to:now))"></iframe>
-        </div>
-        <div style="width: 100%; height: 100%;display: none;" id="epl-dashboards-iframe-container">
 
-            <iframe class="epl-nhv" style="width: 100%; height: 100%; border: 0;" src="about:blank"></iframe>
-            <iframe class="epl-heatmap" style="width: 100%; height: 100%; border: 0; display: none" src="about:blank"></iframe>
-            <iframe class="epl-hostlife" style="width: 100%; height: 100%; border: 0; display: none" src="about:blank"></iframe>
-
-        </div>
-    </div>
+    		    </table>
+   		</div>
+	    </div>
+	</div>
+    </header>
 </div>
 
 </body>

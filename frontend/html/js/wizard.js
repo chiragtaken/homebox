@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-    // Toggle Function
     $('.toggle').click(function(){
 	$(this).children('i').toggleClass('fa-pencil');
         $('.form').animate({
@@ -15,18 +14,24 @@ $(document).ready(function() {
 	var user = $('#username').val();
 	var pass = $('#password').val();
 	if (!user || !pass) return;
-	alert(user);
-    });
+	var data = {"Username": user, "Password": pass};
+	var settings = {
+	  "async": true,
+	  "crossDomain": true,
+	  "url": "/afw/login",
+	  "method": "POST",
+	  "xhrFields": { withCredentials: true },
+	  "headers": {
+	    "content-type": "application/json",
+	    "cache-control": "no-cache"
+	  },
+	  "processData": false,
+	  "data": JSON.stringify(data)
+	};
+	$.ajax(settings).done(function (response) {
+	    window.location = "explorer.html";
+	});
 
-    $.ajax({
-        url: '/afw/list',
-        async: false,
-        success: function (data) {
-		alert(data);
-        },
-        error: function () {
-            console.log("How did we get here");
-        },
     });
 
     function simpleAlert(message, messageType, callback) {
@@ -40,9 +45,4 @@ $(document).ready(function() {
         });
         dlg.setDialogContent(message);
     }
-
-    var cleanup = function () {
-    };
-
-
 });
