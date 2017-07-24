@@ -73,8 +73,14 @@ func initKeys() {
 
 func validate(page http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
-		auth := req.Header["Authorization"]
-		token, err := jwt.ParseWithClaims(auth[0], &HboxMyCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		cookie, err := req.Cookie("Auth")
+                if err != nil {
+			HboxCommon.HboxSendHttpResponse(resp, http.StatusUnauthorized, HboxCommon.HboxRestRespError, err.Error())
+                        return
+                }
+
+		//auth := req.Header["Authorization"]
+		token, err := jwt.ParseWithClaims(cookie.Value, &HboxMyCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte("All Your_Base_is Covered"), nil
 		})	
 		if err != nil {
@@ -112,8 +118,8 @@ func LoginHandler(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	expireToken := time.Now().Add(time.Minute * 20).Unix()
-	//expireCookie := time.Now().Add(time.Minute * 20)
+	expireToken := time.Now().Add(time.Minute * 60).Unix()
+	expireCookie := time.Now().Add(time.Minute * 60)
 	claims := HboxMyCustomClaims{
 		HboxCustomeUserInfo{Name: user.Username, Role: "Member"},
 		jwt.StandardClaims{
@@ -135,13 +141,13 @@ func LoginHandler(resp http.ResponseWriter, req *http.Request) {
 	}
 
 	//create a token instance using the token string
-	tok := HboxCommon.HboxToken{tokenString}
+	//tok := HboxCommon.HboxToken{tokenString}
 	logger.Debug("Token : ", tokenString)
 
-	//cookie := http.Cookie{Name: "Auth", Value: signedToken, Expires: expireCookie, HttpOnly: true}
-	//http.SetCookie(res, &cookie)
+	cookie := http.Cookie{Name: "Auth", Value: tokenString, Expires: expireCookie, HttpOnly: true}
+	http.SetCookie(resp, &cookie)
 
-	HboxCommon.HboxSendHttpResponse(resp, http.StatusOK, HboxCommon.HboxRestRespSuccess, tok)
+	HboxCommon.HboxSendHttpResponse(resp, http.StatusOK, HboxCommon.HboxRestRespSuccess, nil)
 	return
 }
 
@@ -197,6 +203,16 @@ func GetFileHandler(resp http.ResponseWriter, req *http.Request) {
 	}
 }
 
+// deletes the cookie
+func LogoutHandler(resp http.ResponseWriter, req *http.Request) {
+        deleteCookie := http.Cookie{Name: "Auth", Value: "none", Expires: time.Now()}
+        http.SetCookie(resp, &deleteCookie)
+
+	HboxCommon.HboxSendHttpResponse(resp, http.StatusOK, HboxCommon.HboxRestRespSuccess, nil)
+        return
+}
+
+
 func main() {
 
 	//Make a channel to receive os signals
@@ -213,7 +229,7 @@ func main() {
 	logger.Debug("Starting Application REST Router\n")
 	http.HandleFunc("/hbox/login", LoginHandler)
 	http.HandleFunc("/hbox/list", validate(GetFileHandler))
-
+	http.HandleFunc("/hbox/logout", validate(LogoutHandler))
 
 	http.ListenAndServe(":35000", nil)
 
